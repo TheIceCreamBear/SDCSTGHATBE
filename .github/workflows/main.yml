@@ -27,9 +27,9 @@ jobs:
           node-version: 16.x
       
       - name: node version
-        run: node version
+        run: node -v
 
       - name: npm version
-        run: npm version
+        run: npm -v
        
 
