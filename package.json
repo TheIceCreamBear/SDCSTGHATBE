@@ -2,7 +2,7 @@
   "name": "sdcstghatbe",
   "productName": "sdcstghatbe",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "A testing electron application",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -28,7 +28,7 @@
           }
         },
         {
-          "name": "@electron-forge/maker-zip",
+          "name": "@electron-forge/maker-dmg",
           "platforms": [
             "darwin"
           ]
@@ -65,9 +65,9 @@
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
     "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.61",
     "@electron-forge/maker-rpm": "^6.0.0-beta.61",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
-    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.61",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
@@ -88,5 +88,8 @@
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "engines": {
+    "npm": ">=8.x"
   }
 }
