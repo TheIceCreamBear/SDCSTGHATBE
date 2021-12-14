@@ -138,7 +138,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./macOS/${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-x64.dmg
+          asset_path: ./${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-x64.dmg
           asset_name: ${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-x64.dmg
           asset_content_type: application/octet-stream
       
@@ -150,7 +150,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Ubuntu/${{ steps.get_name.outputs.PACKAGE_NAME }}_${{ steps.get_version.outputs.PACKAGE_VERSION }}_amd64.deb
+          asset_path: ./deb/x64/${{ steps.get_name.outputs.PACKAGE_NAME }}_${{ steps.get_version.outputs.PACKAGE_VERSION }}_amd64.deb
           asset_name: ${{ steps.get_name.outputs.PACKAGE_NAME }}_${{ steps.get_version.outputs.PACKAGE_VERSION }}_amd64.deb
           asset_content_type: application/vnd.debian.binary-package
       
@@ -162,7 +162,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Ubuntu/${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-1.x86_64.rpm
+          asset_path: ./rpm/x64/${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-1.x86_64.rpm
           asset_name: ${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }}-1.x86_64.rpm
           asset_content_type: application/x-rpm
       
@@ -174,6 +174,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "./Windows/${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }} Setup.exe"
+          asset_path: "./${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }} Setup.exe"
           asset_name: ${{ steps.get_name.outputs.PACKAGE_NAME }}-${{ steps.get_version.outputs.PACKAGE_VERSION }} Setup.exe"
           asset_content_type: application/octet-stream
