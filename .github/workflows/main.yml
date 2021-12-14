@@ -120,6 +120,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./macOS/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-x64.dmg
           asset_name: ${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-x64.dmg
+          asset_content_type: application/octet-stream
       
       - name: Upload Release Asset [Linux-deb]
         if: startsWith(github.ref, 'refs/tags/v')
@@ -131,6 +132,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./Ubuntu/${{ steps.get_name.outputs.PROJNAME }}_${{ steps.get_version.output.VERSION }}_amd64.deb
           asset_name: ${{ steps.get_name.outputs.PROJNAME }}_${{ steps.get_version.output.VERSION }}_amd64.deb
+          asset_content_type: application/vnd.debian.binary-package
       
       - name: Upload Release Asset [Linux-rpm]
         if: startsWith(github.ref, 'refs/tags/v')
@@ -142,6 +144,7 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./Ubuntu/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-1.x86_64.rpm
           asset_name: ${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-1.x86_64.rpm
+          asset_content_type: application/x-rpm
       
       - name: Upload Release Asset [Windows-squirrel]
         if: startsWith(github.ref, 'refs/tags/v')
@@ -153,3 +156,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: "./Windows/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }} Setup.exe"
           asset_name: ${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }} Setup.exe"
+          asset_content_type: application/octet-stream
