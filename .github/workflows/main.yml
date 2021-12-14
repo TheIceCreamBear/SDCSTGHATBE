@@ -37,24 +37,6 @@ jobs:
           npm ci
           npm run make
       
-      # - name: Build [macOS]
-      #   if: matrix.os == 'macOS-latest'
-      #   run: |
-      #     npm ci
-      #     npm run make
-      
-      # - name: Build [Ubuntu]
-      #   if: matrix.os == 'ubuntu-latest'
-      #   run: |
-      #     npm ci
-      #     npm run make
-      
-      # - name: Build [Windows]
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     npm ci
-      #     npm run make
-      
       - name: Upload artificats [macOS]
         if: matrix.os == 'macOS-latest'
         uses: actions/upload-artifact@v2
@@ -78,4 +60,93 @@ jobs:
           name: Windows
           path: out/make/squirrel.windows/x64/*.exe
       
+  release:
+    needs: build
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Context
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
+      # modify the return value of this to change what the name of the expected file is
+      - name: Get Application Name
+        id: get_name
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: echo ::set-output name=PROJNAME::sdcstghatbe
+
+      - name: Get Release Version
+        id: get_version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
+
+      - uses: actions/download-artifact@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          name: Ubuntu
+
+      - uses: actions/download-artifact@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          name: Windows
+
+      - uses: actions/download-artifact@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          name: macOS
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+          # TODO decide weather to implement a manual change tracker or an auto one
+          # body_path: TODO VALUE
+      
+      - name: Upload Release Asset [macOS-dmg]
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./macOS/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-x64.dmg
+      
+      - name: Upload Release Asset [Linux-deb]
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Ubuntu/${{ steps.get_name.outputs.PROJNAME }}_${{ steps.get_version.output.VERSION }}_amd64.deb
+      
+      - name: Upload Release Asset [Linux-rpm]
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Ubuntu/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }}-1.x86_64.rpm
+      
+      - name: Upload Release Asset [Windows-squirrel]
+        if: startsWith(github.ref, 'refs/tags/v')
+        continue-on-error: true
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "./Windows/${{ steps.get_name.outputs.PROJNAME }}-${{ steps.get_version.output.VERSION }} Setup.exe"
