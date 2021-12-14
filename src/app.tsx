@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import App from './components/application'
 
-ReactDOM.render(<h1>
-    This is a headding
-</h1>, document.body);
+ReactDOM.render(<App />, document.body);
