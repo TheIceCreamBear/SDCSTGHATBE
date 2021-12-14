@@ -72,16 +72,12 @@ jobs:
 
       # used to properly get the package version
       - uses: actions/checkout@v2
+        if: startsWith(github.ref, 'refs/tags/v')
       - name: Setup node 16
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-
-      - name: Display file info
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          pwd
-          ls -al
 
       # modify the return value of this to change what the name of the expected file is
       - name: Get Application Name
@@ -113,6 +109,12 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: macOS
+
+      - name: Display file info
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          pwd
+          ls -al
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/v')
